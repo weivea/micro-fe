@@ -60,7 +60,7 @@ mfvm.get('/', async function(ctx) {
   }
 })
 
-// 注册自服务
+// 注册子服务
 mfvm.register('/sub', async function(mfvm) {
   // 中间件
   mfvm.use({
