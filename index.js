@@ -1,15 +1,14 @@
 'use strick'
 const debug = require('debug')('micro-fe')
+
 const convert = require('koa-convert')
 const compose = require('koa-compose')
 const { join } = require('path')
 const isGeneratorFunction = require('is-generator-function')
-const Koa = require('./lib/application')
 const pathToRegexp = require('path-to-regexp')
 const methods = require('methods')
 const assert = require('assert')
 const deprecate = require('depd')('koa');
-const app = new Koa()
 
 class MF {
   /**
@@ -118,9 +117,9 @@ class MF {
     submfvm.parent = this
     submfvm.root = this.root || this
     submfvm.prefix = join(this.prefix, prefix)
-    submfvm.regexp = pathToRegexp(submfvm.prefix)
+    // submfvm.regexp = pathToRegexp(submfvm.prefix)
     this.children.push(submfvm)
-    Promise.resolve(fn(mfvm))
+    Promise.resolve(fn(submfvm))
       .then(() => {})
       .catch(err => {
         this.app.emit('error', err, this)
@@ -165,7 +164,7 @@ class MF {
             control.paramNames.forEach((item, ind) => {
               param[item.name] = vals[ind]
             })
-            ctx.param = param
+            ctx.params = param
             return Promise.resolve(control.fn(ctx, next))
           })
         }
@@ -174,7 +173,7 @@ class MF {
       const children = this.children
       for (let i = 0; i < children.length; i++) {
         const child = children[i]
-        if (child.regexp.test(ctx.path)) {
+        if (~ctx.path.indexOf(child.prefix)) {
           // 先运行中间件
           return await fnMiddleware(ctx, async () => {
             // 存在businessFun就直接运行
@@ -212,4 +211,4 @@ methods.forEach(function(method) {
   }
 })
 
-export default MF
+module.exports = MF
