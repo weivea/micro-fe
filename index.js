@@ -17,11 +17,8 @@ class MF {
    * 常用属性：
    * app:koa实例
    * prefix: path前缀
-   * prefix: path前缀
    * parent: 父级实例
-   * root: 父级实例
-   * parent: 父级实例
-   * parent: 父级实例
+   * root: 根父级实例
    * middleware: 中间件列表
    * middlewareName: 中间件名儿列表
    * children: 子组件
