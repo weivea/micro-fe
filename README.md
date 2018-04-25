@@ -187,7 +187,7 @@ this.prefix // path前缀，跟实例为空
 
 ### children: 子组件
 
-### ctxDecorateList: ctx 扩展聊表
+### ctxDecorateList: ctx 扩展列表
 
 
 ## 功能扩展
