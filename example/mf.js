@@ -5,7 +5,7 @@ const mfvm = new MicroFe(app)
 
 mfvm.insert(0, {
   name: 'test',
-  middleware: async (ctx, next) => {
+  middleware: async function(ctx, next) {
     await await (() =>
       new Promise((resolve, reject) => {
         // 自运行返回Promise
@@ -32,7 +32,7 @@ mfvm.get('/', async function(ctx) {
 mfvm.register('/sub', async function(mfvm) {
   mfvm.use({
     name: 'subtest',
-    middleware: async (ctx, next) => {
+    middleware: async function(ctx, next) {
       await await (() =>
         new Promise((resolve, reject) => {
           // 自运行返回Promise

@@ -33,6 +33,7 @@ const mfvm = new MicroFe(app)
 //  有序插入中间件
 // 可以通过 mfvm.middlewareName来查看中间件情况，调整插入位置，
 // 也可以通过 mfvm.use({name, middleware}) , 默认添加到最后边
+// middleware中的this 指向mfvm实例
 mfvm.insert(0, {
   name: 'test',
   middleware: async (ctx, next) => {
@@ -50,7 +51,8 @@ mfvm.insert(0, {
 })
 
 // 还有mfvm.post,... 支持方法参见https://github.com/jshttp/methods， node支持的都支持
-mfvm.get('/api/:id', async function(ctx) {
+// control中的this 指向mfvm实例
+mfvm.get('/api/:id', async function control(ctx) {
   ctx.body = ctx.params.id
 })
 mfvm.get('/', async function(ctx) {
@@ -95,6 +97,8 @@ app.listen(3000)
 
 ### 路由
 
+**middleware中的`this` 指向`mfvm`实例**
+
 ```javascript
 const app = new Koa()
 const mfvm = new MicroFe(app)
@@ -109,6 +113,8 @@ mfvm
 
 ### 中间件
 
+**control中的`this` 指向`mfvm`实例**
+
 ```javascript
 const app = new Koa()
 const mfvm = new MicroFe(app)
@@ -117,7 +123,7 @@ const mfvm = new MicroFe(app)
 // 也可以通过 mfvm.use({name, middleware}) , 默认添加到最后边
 mfvm.insert(0, {
   name: 'test',
-  middleware: async (ctx, next) => {
+  middleware: async function(ctx, next) {
     await await (() =>
       new Promise((resolve, reject) => {
         // 自运行返回Promise
@@ -132,7 +138,7 @@ mfvm.insert(0, {
 })
 mfvm.use({
   name: 'subtest',
-  middleware: async (ctx, next) => {
+  middleware: async function(ctx, next) {
     await await (() =>
       new Promise((resolve, reject) => {
         setTimeout(() => {

@@ -68,7 +68,7 @@ class MF {
       throw new TypeError(`middleware name [${name}] was used!`)
     }
     this.middlewareName.splice(index, 0, name)
-    this.middleware.splice(index, 0, middleware)
+    this.middleware.splice(index, 0, middleware.bind(this))
   }
   /**
    * 末尾插入中间件
@@ -202,7 +202,7 @@ methods.forEach(function(method) {
     this._controls[method.toUpperCase()][path] = {
       regexp,
       paramNames,
-      fn: middleware
+      fn: middleware.bind(this)
     }
     return this
   }
